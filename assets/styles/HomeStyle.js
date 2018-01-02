@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
+const win = Dimensions.get('window');
 
 export const style = StyleSheet.create({
     backgroundImage: {
@@ -11,6 +12,7 @@ export const style = StyleSheet.create({
     },
     homeTop: {
         flex: 1,
+        width: win.width,
         flexDirection: 'row',
         justifyContent: 'center',  // X axis
         alignItems: 'center',  // Y axis
@@ -18,6 +20,20 @@ export const style = StyleSheet.create({
     },
     homeCenter: {
         flex: 4,
+    },
+    homeCenterInner: {
+        minHeight: 320 - 30,  // -30 moves the position a bit up if there are no extra definitions
+        minWidth: win.width,
+        paddingLeft: 14,
+        paddingRight: 10,
+        justifyContent: 'center',  // X axis
+        alignItems: 'center',  // Y axis
+        alignContent: 'center',  // Y axis
+    },
+    extraDefinitionInner: {
+        flex: 1,
+        paddingLeft: 14,
+        paddingRight: 10,
         justifyContent: 'center',  // X axis
         alignItems: 'center',  // Y axis
         alignContent: 'center',  // Y axis
@@ -28,11 +44,25 @@ export const style = StyleSheet.create({
         alignItems: 'center',  // Y axis
         alignContent: 'center',  // Y axis
     },
-    character: {
+    scrollView: {
         flex: 1,
     },
+    innerScrollView: {
+        justifyContent: 'center',  // X axis
+        alignItems: 'center',  // Y axis
+        alignContent: 'center',  // Y axis
+    },
     topText: {
-        fontSize: 40,
+        fontSize: 30,
+    },
+    topTextBig: {
+        fontSize: 24,
+    },
+    topTextMedium: {
+        fontSize: 18,
+    },
+    topTextSmall: {
+        fontSize: 16,
     },
     character: {   /* No or 5th tone */
         color: '#CCCCCC',
@@ -53,7 +83,7 @@ export const style = StyleSheet.create({
         color: '#CCCCCC',
     },
     centerText: {
-        fontSize: 26,
+        fontSize: 20,
         color: 'white',
     },
     centerTextCharacter: {
