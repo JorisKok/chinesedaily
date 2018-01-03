@@ -11,7 +11,7 @@
     "@expo/samples": "2.1.1",
     "expo": "^24.0.0",
     "react": "16.0.0",
-    "react-native": "^0.51.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
     "react-native-axios": "^0.17.1",
     "react-native-simple-events": "^1.0.1",
     "react-native-vector-icons": "^4.4.3",

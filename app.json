@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "chinesedaily",
-    "description": "A very interesting project.",
+    "name": "Chinese Daily",
+    "description": "This app gives you a daily chinese sentence. You can select the difficulty as well as Simplified or Traditional ",
     "slug": "chinesedaily",
     "privacy": "public",
     "sdkVersion": "24.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": ["android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,8 +14,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true
+    "android": {
+      "package": "com.joriskok.chinesedaily"
     }
   }
 }
