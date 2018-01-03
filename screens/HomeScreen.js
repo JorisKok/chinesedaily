@@ -49,28 +49,32 @@ export default class HomeScreen extends Component {
         // Get the state.settings from the storage
         try {
             let p1 = AsyncStorage.getItem('@dailychinese:difficulty');
-
             let p2 = AsyncStorage.getItem('@dailychinese:characters');
 
-            Promise.all([p1, p2]).then(function (values) {
-                let difficulty = values[0];
-                let characters = values[1].split('/');
-                let settings = Object.assign({}, this.state.settings);
-                if (characters.includes('traditional') || characters.includes('simplified')) {
-                    settings['characters'] = characters;
-                }
-                if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
-                    settings['difficulty'] = difficulty;
-                }
-                this.setState({'settings': settings});
+            Promise.all([p1, p2])
+                .then(function (values) {
+                    let difficulty = values[0] ? values[0] : 'easy';
+                    let characters = values[1] ? values[1].split('/') : ['simplified', 'traditional'];
+                    let settings = Object.assign({}, this.state.settings);
+                    if (characters.includes('traditional') || characters.includes('simplified')) {
+                        settings['characters'] = characters;
+                    }
+                    if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
+                        settings['difficulty'] = difficulty;
+                    }
+                    this.setState({'settings': settings});
 
-                this.fetchData(settings);
+                    this.fetchData(settings);
 
-            }.bind(this));
+                }.bind(this))
+                .catch(function (error) {
+                    // TODO implement error handling
+                });
 
         } catch (error) {
             // Error retrieving data
             // It still works, but forgets the user settings each time it restarts...
+            // TODO implement error handling
         }
 
         Events.on('update-settings', 'settings', this.updateSettings);

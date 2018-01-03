@@ -26,28 +26,33 @@ export default class SettingsScreen extends React.Component {
     };
 
     componentWillMount() {
+
         try {
             let p1 = AsyncStorage.getItem('@dailychinese:difficulty');
-
             let p2 = AsyncStorage.getItem('@dailychinese:characters');
 
-            Promise.all([p1, p2]).then(function (values) {
-                let difficulty = values[0];
-                let characters = values[1].split('/');
-                let state = Object.assign({}, this.state);
-                if (characters.includes('traditional') || characters.includes('simplified')) {
-                    state['characters'] = characters;
-                }
-                if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
-                    state['difficulty'] = difficulty;
-                }
+            Promise.all([p1, p2])
+                .then(function (values) {
+                    let difficulty = values[0] ? values[0] : 'easy';
+                    let characters = values[1] ? values[1].split('/') : ['simplified', 'traditional'];
+                    let state = Object.assign({}, this.state);
+                    if (characters.includes('traditional') || characters.includes('simplified')) {
+                        state['characters'] = characters;
+                    }
+                    if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
+                        state['difficulty'] = difficulty;
+                    }
 
-                this.setState(state);
-            }.bind(this));
+                    this.setState(state);
+                }.bind(this))
+                .catch(function (error) {
+                    // TODO implement error handling
+                });
 
         } catch (error) {
             // Error retrieving data
             // It still works, but forgets the user settings each time it restarts...
+            // TODO implement error handling
         }
     }
 
