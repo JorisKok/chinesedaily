@@ -14,14 +14,40 @@ export default class SettingsScreen extends React.Component {
     constructor() {
         super();
         this.state = {
-            difficulty: 'easy',
-            characters: ['simplified', 'traditional'],  // It's easier to put this in an array, so we can loop over it
+            difficulty: '',
+            characters: [],  // It's easier to put this in an array, so we can loop over it
         }
     }
 
     static navigationOptions = {
         title: 'Settings',
     };
+
+    componentWillMount() {
+        try {
+            let p1 = AsyncStorage.getItem('@dailychinese:difficulty');
+
+            let p2 = AsyncStorage.getItem('@dailychinese:characters');
+
+            Promise.all([p1, p2]).then(function (values) {
+                let difficulty = values[0];
+                let characters = values[1].split('/');
+                let state = Object.assign({}, this.state);
+                if (characters.includes('traditional') || characters.includes('simplified')) {
+                    state['characters'] = characters;
+                }
+                if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
+                    state['difficulty'] = difficulty;
+                }
+
+                this.setState(state);
+            }.bind(this));
+
+        } catch (error) {
+            // Error retrieving data
+            // It still works, but forgets the user settings each time it restarts...
+        }
+    }
 
     storeDifficulty(value) {
         this.setState({difficulty: value});
@@ -34,7 +60,6 @@ export default class SettingsScreen extends React.Component {
             AsyncStorage.setItem('@dailychinese:difficulty', value);
         } catch (error) {
             // Error saving data
-            // TODO error handling
         }
     }
 
@@ -49,7 +74,6 @@ export default class SettingsScreen extends React.Component {
             AsyncStorage.setItem('@dailychinese:characters', value);  // Can't store value as array
         } catch (error) {
             // Error saving data
-            // TODO error handling
         }
     }
 

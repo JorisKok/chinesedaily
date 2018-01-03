@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 const win = Dimensions.get('window');
 
@@ -64,37 +64,54 @@ export const style = StyleSheet.create({
     topTextSmall: {
         fontSize: 16,
     },
-    character: {   /* No or 5th tone */
+    character: {
+        /* No or 5th tone */
         color: '#CCCCCC',
     },
-    characterRed: {  /* 1st tone */
+    characterRed: {
+        /* 1st tone */
         color: '#F2777A',
     },
-    characterGreen: {  /* 2nd tone */
+    characterGreen: {
+        /* 2nd tone */
         color: '#99CC99',
     },
-    characterBlue: {  /* 3rd tone */
+    characterBlue: {
+        /* 3rd tone */
         color: '#6699CC',
     },
-    characterPurple: {  /* 4rd tone */
+    characterPurple: {
+        /* 4rd tone */
         color: '#CC99CC',
     },
     separator: {
         color: '#CCCCCC',
     },
     centerText: {
-        fontSize: 20,
+        fontSize: 16,
         color: 'white',
+        textAlign: 'center',
     },
     centerTextCharacter: {
         fontSize: 36,
         color: 'white',
     },
     centerTextPinyin: {
-        fontSize: 20,
+        fontSize: 14,
         color: '#CCCCCC',
     },
     bottomText: {
         color: 'white',
     },
+    loadingText: {
+        color: 'white',
+    },
+    errorView: {
+        justifyContent: 'center',  // X axis
+        alignItems: 'center',  // Y axis
+        alignContent: 'center',  // Y axis
+    },
+    errorText: {
+        color: 'white',
+    }
 });

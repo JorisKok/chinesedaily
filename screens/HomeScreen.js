@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    AsyncStorage,
     ImageBackground,
     ScrollView,
     Text,
@@ -30,26 +31,49 @@ export default class HomeScreen extends Component {
             english: '',
             extraDefinition: [],  // Duplicate definitions get stored in here by id
             settings: {
-                difficulty: 'easy',
-                characters: ['simplified', 'traditional']  // It's easier to put this in an array, so we can loop over it
+                difficulty: '',
+                characters: []  // It's easier to put this in an array, so we can loop over it
             },
             data: [],  // Get this from the api in componentDidMount
+            error: false,
         };
 
         this.onPress = this.onPress.bind(this);
         this.updateSettings = this.updateSettings.bind(this);
         this.fetchData = this.fetchData.bind(this);
-        this.getTopTextStyle= this.getTopTextStyle.bind(this);
+        this.getTopTextStyle = this.getTopTextStyle.bind(this);
     }
 
     componentWillMount() {
 
-        // TODO Get the data via ajax fetch() ? Axios ?
-        // TODO Get the default settings from the localStorage
+        // Get the state.settings from the storage
+        try {
+            let p1 = AsyncStorage.getItem('@dailychinese:difficulty');
+
+            let p2 = AsyncStorage.getItem('@dailychinese:characters');
+
+            Promise.all([p1, p2]).then(function (values) {
+                let difficulty = values[0];
+                let characters = values[1].split('/');
+                let settings = Object.assign({}, this.state.settings);
+                if (characters.includes('traditional') || characters.includes('simplified')) {
+                    settings['characters'] = characters;
+                }
+                if (['easy', 'intermediate', 'difficult'].includes(difficulty)) {
+                    settings['difficulty'] = difficulty;
+                }
+                this.setState({'settings': settings});
+
+                this.fetchData(settings);
+
+            }.bind(this));
+
+        } catch (error) {
+            // Error retrieving data
+            // It still works, but forgets the user settings each time it restarts...
+        }
 
         Events.on('update-settings', 'settings', this.updateSettings);
-
-        this.fetchData();
     }
 
     fetchData(settings = this.state.settings) {
@@ -90,11 +114,9 @@ export default class HomeScreen extends Component {
                 this.setState({'data': final, 'extraDefinition': extra});
 
             }.bind(this))
-            .catch(function failure(error) {
-                console.log('error');
-                console.log(error);
-                // TODO do error handling
-            });
+            .catch(function failure() {
+                this.setState({'data': [], 'error': true});
+            }.bind(this));
     }
 
     updateSettings(settings) {
@@ -181,7 +203,7 @@ export default class HomeScreen extends Component {
 
     render() {
 
-        const result = this.state.data.map((obj) => {
+        let result = this.state.data.map((obj) => {
 
             // Select the color depending on the tone
             // We show the sentence only in the preferred character type --> the [0]
@@ -242,6 +264,19 @@ export default class HomeScreen extends Component {
                 });
         }
 
+        if (result.length === 0) {
+            result = <Text style={style.loadingText}>Loading sentence...</Text>
+        }
+
+        if (this.state.error) {
+            result = <View style={style.errorView}>
+                <Text style={style.errorText}>Something went wrong.</Text>
+                <Text style={style.errorText}>Check your internet connection or try again later.</Text>
+            </View>
+        }
+
+        let english = this.state.english ? this.state.english.split('/').join('\n') : '';
+
         return (
             <ImageBackground source={require('../assets/images/background.png')} style={style.backgroundImage}>
                 <View style={style.home}>
@@ -254,7 +289,7 @@ export default class HomeScreen extends Component {
                             <View style={style.homeCenterInner}>
                                 <Text style={style.centerTextCharacter}>{this.state.characters}</Text>
                                 <Text style={style.centerTextPinyin}>{this.state.pinyin}</Text>
-                                <Text style={style.centerText}>{this.state.english}</Text>
+                                <Text style={style.centerText}>{english}</Text>
 
                                 {extraDefinitions &&
                                 extraDefinitions
