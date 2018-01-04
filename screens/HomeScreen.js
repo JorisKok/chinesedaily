@@ -191,7 +191,7 @@ export default class HomeScreen extends Component {
                                           style={style.separator}> • </Text>);
                 }
 
-                characters.push([...obj[type]].map((value, index) => {
+                characters.push([obj[type]].map((value, index) => {
                     let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[index]);
 
                     return (
@@ -220,7 +220,7 @@ export default class HomeScreen extends Component {
                 let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[index]);
 
                 return (
-                    <Text key={'individual-character-' + value} style={style['character' + color]}>{value}</Text>
+                    <Text key={'individual-character-' + index} style={style['character' + color]}>{value}</Text>
                 );
             });
 
