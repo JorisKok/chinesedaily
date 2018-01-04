@@ -211,7 +211,7 @@ export default class HomeScreen extends Component {
 
             // Select the color depending on the tone
             // We show the sentence only in the preferred character type --> the [0]
-            let sentence = [...obj[this.state.settings.characters[0]]].map((value, index) => {
+            let sentence = [obj[this.state.settings.characters[0]]].map((value, index) => {
 
                 // Select the tone color depending on the tone in the pinyin
                 // We 'split' the pinyin string depending on the character index we are at
