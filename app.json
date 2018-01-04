@@ -5,7 +5,9 @@
     "slug": "chinesedaily",
     "privacy": "public",
     "sdkVersion": "24.0.0",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,6 +18,7 @@
     },
     "android": {
       "package": "com.joriskok.chinesedaily"
-    }
+    },
+    "permissions": []
   }
 }
