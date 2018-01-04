@@ -191,12 +191,24 @@ export default class HomeScreen extends Component {
                                           style={style.separator}> • </Text>);
                 }
 
-                characters.push([obj[type]].map((value, index) => {
-                    let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[index]);
+                let realIndex = 0;
+                characters.push([obj[type]].map((value, index) => {  // This maps per character but also per word!!
+
+                    let result = [];
+                    for (let i = 0; i < value.length; i++) {
+
+                        let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[realIndex]);
+
+                        result.push(
+                            <Text key={'individual-character-' + value[i]}
+                                  style={style['character' + color]}>{value[i]}</Text>
+                        );
+
+                        realIndex += 1;  // This index counts only the characters and not the words (2 char together etc)
+                    }
 
                     return (
-                        <Text key={'individual-character-' + value}
-                              style={style['character' + color]}>{value}</Text>
+                        <Text key={'individual-word-' + value}>{result}</Text>
                     );
                 }));
             }
@@ -211,16 +223,28 @@ export default class HomeScreen extends Component {
 
             // Select the color depending on the tone
             // We show the sentence only in the preferred character type --> the [0]
-            let sentence = [obj[this.state.settings.characters[0]]].map((value, index) => {
+            let realIndex = 0;
+            let sentence = [obj[this.state.settings.characters[0]]].map((value, index) => {  // This maps per character but also per word!!
 
-                // Select the tone color depending on the tone in the pinyin
-                // We 'split' the pinyin string depending on the character index we are at
-                // So we can only set the color for the current character
-                // Pinyin always has 1 or more consecutive vowels, so we split on those
-                let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[index]);
+                let result = [];
+                for (let i = 0; i < value.length; i++) {
+
+                    // Select the tone color depending on the tone in the pinyin
+                    // We 'split' the pinyin string depending on the character index we are at
+                    // So we can only set the color for the current character
+                    // Pinyin always has 1 or more consecutive vowels, so we split on those
+                    let color = selectToneColor(obj.pinyin.match(/[aieouāēīōūáéíóúǎěǐǒǔàèìòù]+/g)[realIndex]);
+
+                    result.push(
+                        <Text key={'sentence-individual-character-' + value[i]}
+                              style={style['character' + color]}>{value[i]}</Text>
+                    );
+
+                    realIndex += 1;  // This index counts only the characters and not the words (2 char together etc)
+                }
 
                 return (
-                    <Text key={'individual-character-' + index} style={style['character' + color]}>{value}</Text>
+                    <Text key={'sentence-individual-word-' + value}>{result}</Text>
                 );
             });
 
