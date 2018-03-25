@@ -5,6 +5,3 @@ Daily chinese sentence source from frappantchinees.nl via yahoo news Taiwan or A
 difficulty selected 
 
 Any problems or feature request? Leave a message here via the issue page.
-
-Play store link:
-https://play.google.com/store/apps/details?id=com.joriskok.chinesedaily 
